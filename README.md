@@ -1,13 +1,13 @@
 spring-jersey-jpa-demo
 ===
 
-$ mvn clean verify
-
 ![Intended Java technology stack](http://ibin.co/3EZ7vQAYb8cT.png)
 
 ---
 
 >Done: Demo for JPA (EclipseLink)
+
+>$ mvn clean test
 
 Todo: Spring (DI, AOP), Jersey (restful), Jetty (embedded, E2E) ...
 
