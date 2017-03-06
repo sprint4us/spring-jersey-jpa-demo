@@ -1,4 +1,7 @@
-# spring-jersey-jpa-demo
+spring-jersey-jpa-demo
+===
+
+$ mvn clean verify
 
 ![Intended Java technology stack](http://ibin.co/3EZ7vQAYb8cT.png)
 
