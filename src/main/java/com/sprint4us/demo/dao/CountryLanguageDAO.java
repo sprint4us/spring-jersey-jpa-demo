@@ -4,39 +4,51 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.TypedQuery;
+
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sprint4us.demo.entity.Country;
 import com.sprint4us.demo.entity.Language;
 
+@Repository
 public class CountryLanguageDAO {
 
-	private EntityManagerFactory emf;
+	@PersistenceContext(unitName = "myPU", type = PersistenceContextType.EXTENDED)
 	private EntityManager em;
-	private EntityTransaction tx;
 
-	public CountryLanguageDAO() {
-
-		emf = Persistence.createEntityManagerFactory("myPU");
-		em = emf.createEntityManager();
-		tx = em.getTransaction();
-	}
-
+	@Transactional
 	public void create(Object obj) {
-		tx.begin();
+
 		em.persist(obj);
-		tx.commit();
 	}
 
+	@Transactional
 	public void update(Country country, Language language) {
 
-		tx.begin();
 		country.addLanguage(language);
-		tx.commit();
+		em.flush();
+	}
+
+	@Transactional
+	public int updatePercentage(String languageName, int percentage) {
+
+		int totalUpdated = em.createQuery(
+				"update Language l set l.percentage=" + percentage
+						+ " where l.name='" + languageName + "'")
+				.executeUpdate();
+
+		return totalUpdated;
+	}
+
+	@Transactional
+	public void syncToDB(Object obj) {
+
+		em.refresh(obj);
 	}
 
 	public List<Country> retrieveAllCountries() {
@@ -102,29 +114,5 @@ public class CountryLanguageDAO {
 		} catch (NoResultException e) {
 			return 0;
 		}
-	}
-
-	public int updatePercentage(String languageName, int percentage) {
-
-		tx.begin();
-
-		int totalUpdated = em.createQuery(
-				"update Language l set l.percentage=" + percentage
-						+ " where l.name='" + languageName + "'")
-				.executeUpdate();
-		tx.commit();
-
-		return totalUpdated;
-	}
-
-	public void syncToDB(Object obj) {
-
-		em.refresh(obj);
-	}
-
-	public void close() {
-
-		em.clear();
-		emf.close();
 	}
 }

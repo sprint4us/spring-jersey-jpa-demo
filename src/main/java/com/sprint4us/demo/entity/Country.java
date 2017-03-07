@@ -20,6 +20,7 @@ public class Country {
 	private List<Language> languages = new ArrayList<Language>();
 
 	public Country() {
+
 	}
 
 	public Country(String name) {
