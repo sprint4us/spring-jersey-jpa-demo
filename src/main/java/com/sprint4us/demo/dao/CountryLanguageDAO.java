@@ -51,6 +51,11 @@ public class CountryLanguageDAO {
 		em.refresh(obj);
 	}
 
+	public Country findCountry(Long id) {
+
+		return em.find(Country.class, id);
+	}
+
 	public List<Country> retrieveAllCountries() {
 
 		TypedQuery<Country> q = em.createQuery("select c from Country c",
