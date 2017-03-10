@@ -7,6 +7,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,18 +25,19 @@ public class CountryLanguageResource {
 
 	@POST
 	@Path("create/country")
-	@Produces("text/plain")
-	public String createCountry(String name) {
+	@Produces(MediaType.APPLICATION_JSON)
+	public Country createCountry(String name) {
 
 		Country country = new Country(name);
 		service.create(country);
-		return name + " with id " + country.getId() + " is created.\n";
+		return country;
+		// return name + " with id " + country.getId() + " is created.\n";
 	}
 
 	@PUT
 	@Path("update/country")
-	@Produces("text/plain")
-	public String updateCountry(@FormParam("id") Long id,
+	@Produces(MediaType.APPLICATION_JSON)
+	public Country updateCountry(@FormParam("id") Long id,
 			@FormParam("l") String langName, @FormParam("p") int percentage) {
 
 		System.out.println(id);
@@ -43,20 +45,18 @@ public class CountryLanguageResource {
 		Language lang = new Language(langName, percentage);
 		service.update(country, lang);
 
-		return country.getName() + " with id " + id
-				+ " is updated to language " + langName + " with id "
-				+ lang.getId() + "\n";
+		return country;
 	}
 
 	@GET
 	@Path("search/percentage")
-	@Produces("text/plain")
+	@Produces(MediaType.TEXT_PLAIN)
 	public String searchPercentage(@QueryParam("c") String countryName,
 			@QueryParam("l") String langName) {
 
 		int percentage = service.searchPercentage(countryName, langName);
 
-		return countryName + " has " + percentage + "% " + langName
-				+ " as foreign language." + "\n";
+		return String.format("%s has %s%% %s as foreign language.\n",
+				countryName, percentage, langName);
 	}
 }
