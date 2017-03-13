@@ -1,5 +1,6 @@
 package com.sprint4us.demo.rest;
 
+import javax.inject.Inject;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -9,7 +10,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.sprint4us.demo.dao.CountryLanguageDAO;
@@ -20,7 +20,7 @@ import com.sprint4us.demo.entity.Language;
 @Path("/")
 public class CountryLanguageResource {
 
-	@Autowired
+	@Inject
 	private CountryLanguageDAO service;
 
 	@POST
@@ -31,7 +31,6 @@ public class CountryLanguageResource {
 		Country country = new Country(name);
 		service.create(country);
 		return country;
-		// return name + " with id " + country.getId() + " is created.\n";
 	}
 
 	@PUT
@@ -40,7 +39,6 @@ public class CountryLanguageResource {
 	public Country updateCountry(@FormParam("id") Long id,
 			@FormParam("l") String langName, @FormParam("p") int percentage) {
 
-		System.out.println(id);
 		Country country = service.findCountry(id);
 		Language lang = new Language(langName, percentage);
 		service.update(country, lang);
@@ -56,7 +54,7 @@ public class CountryLanguageResource {
 
 		int percentage = service.searchPercentage(countryName, langName);
 
-		return String.format("%s has %s%% %s as foreign language.\n",
+		return String.format("%s has %d%% %s as foreign language.\n",
 				countryName, percentage, langName);
 	}
 }

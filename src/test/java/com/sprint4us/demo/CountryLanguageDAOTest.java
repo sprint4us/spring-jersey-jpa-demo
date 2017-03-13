@@ -6,14 +6,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.sprint4us.demo.dao.CountryLanguageDAO;
 import com.sprint4us.demo.entity.Country;
 import com.sprint4us.demo.entity.Language;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/spring-context.xml" })
+@RunWith(SpringRunner.class)
+@ContextConfiguration(locations = { "/applicationContext.xml" })
 public class CountryLanguageDAOTest {
 
 	@Autowired

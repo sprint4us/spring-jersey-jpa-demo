@@ -8,7 +8,7 @@
 
 >Done: Demo for JPA (EclipseLink)
 
-Todo: ~~Spring (DI, AOP)~~, ~~Jersey (restful)~~, Jetty (~~embedded~~, E2E) ...
+>~~Todo: Spring (DI, AOP), Jersey (restful), Jetty (embedded, E2E) ...~~
 
 >Manual test examples:
 
