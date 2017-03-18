@@ -3,14 +3,11 @@ package com.sprint4us.demo;
 import static org.junit.Assert.assertEquals;
 
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -18,25 +15,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.sprint4us.demo.entity.Country;
 import com.sprint4us.demo.entity.Language;
-import com.sprint4us.demo.rest.CountryLanguageResourceConf;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(locations = { "/applicationContext.xml" })
-public class CoutryLanguageEndToEndTest extends JerseyTest {
-
-	@Override
-	protected Application configure() {
-
-		ResourceConfig config = new CountryLanguageResourceConf();
-
-		return config;
-	}
+@ContextConfiguration(locations = {
+		"/applicationContext.xml" })
+public class CoutryLanguageEndToEndTest extends CountryLanguageJerseyTestBase {
 
 	@Test
-	public void testResourcesE2E() {
+	public void testEndToEnd() {
 
-		Response resp = target("create/country").request().post(
-				Entity.entity("Netherlands", MediaType.TEXT_PLAIN));
+		Response resp = target("create/country").request()
+				.post(Entity.entity("Netherlands", MediaType.TEXT_PLAIN));
 		Country country = resp.readEntity(Country.class);
 		assertEquals(200, resp.getStatus());
 		assertEquals("Netherlands", country.getName());

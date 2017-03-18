@@ -4,7 +4,7 @@
 
 	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<pattern>%d{HH:mm:ss.SSS} | %-5p - %m%n</pattern>
+			<pattern>%d{HH:mm:ss.SSS} | %-5p %c - %m%n</pattern>
 		</encoder>
 	</appender>
 
@@ -13,7 +13,8 @@
 	</root>
 
 	<logger name="org.eclipse" level="OFF" />
-	<logger name="org.glassfish" level="OFF" />
+	<logger name="org.glassfish.jersey.logging.LoggingFeature"
+		level="DEBUG" />
 	<logger name="org.springframework" level="OFF" />
 
 </configuration>

@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 
 import javax.inject.Singleton;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
@@ -16,7 +15,6 @@ import javax.ws.rs.core.Response;
 import org.glassfish.hk2.api.Factory;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -26,22 +24,18 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import com.sprint4us.demo.dao.CountryLanguageDAO;
 import com.sprint4us.demo.entity.Country;
 import com.sprint4us.demo.entity.Language;
-import com.sprint4us.demo.rest.CountryLanguageResourceConf;
 
 @RunWith(MockitoJUnitRunner.class)
 @WebAppConfiguration
-public class CoutryLanguageResourceTest extends JerseyTest {
+public class CoutryLanguageResourceTest extends CountryLanguageJerseyTestBase {
 
 	@Mock
 	private CountryLanguageDAO service;
 
 	@Override
-	public Application configure() {
+	public ResourceConfig configure() {
 
-		ResourceConfig config = new CountryLanguageResourceConf();
-		config.register(new MockProvider());
-
-		return config;
+		return super.configure().register(new MockProvider());
 	}
 
 	private class MockProvider extends AbstractBinder
