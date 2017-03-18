@@ -48,4 +48,10 @@ public class Language {
 		this.percentage = percentage;
 	}
 
+	@Override
+	public String toString() {
+
+		return "Language [id=" + id + ", name=" + name + ", percentage="
+				+ percentage + "]";
+	}
 }

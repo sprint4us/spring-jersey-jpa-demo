@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.google.common.collect.Lists;
+
 @Entity
 public class Country {
 
@@ -48,4 +50,10 @@ public class Country {
 		languages.add(language);
 	}
 
+	@Override
+	public String toString() {
+
+		return "Country [id=" + id + ", name=" + name + ", languages="
+				+ Lists.newArrayList(languages) + "]";
+	}
 }

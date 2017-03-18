@@ -12,6 +12,8 @@
 		<appender-ref ref="stdout" />
 	</root>
 
+	<logger name="com.sprint4us" level="OFF" />
+
 	<logger name="org.eclipse" level="OFF" />
 	<logger name="org.glassfish.jersey.logging.LoggingFeature"
 		level="DEBUG" />

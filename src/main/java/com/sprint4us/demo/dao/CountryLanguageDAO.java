@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
-import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,12 +36,12 @@ public class CountryLanguageDAO {
 	@Transactional
 	public int updatePercentage(String languageName, int percentage) {
 
-		int totalUpdated = em.createQuery(
-				"update Language l set l.percentage=" + percentage
+		int retVal = em
+				.createQuery("update Language l set l.percentage=" + percentage
 						+ " where l.name='" + languageName + "'")
 				.executeUpdate();
 
-		return totalUpdated;
+		return retVal;
 	}
 
 	@Transactional
@@ -53,71 +52,81 @@ public class CountryLanguageDAO {
 
 	public Country findCountry(Long id) {
 
-		return em.find(Country.class, id);
+		Country retVal = em.find(Country.class, id);
+
+		return retVal;
 	}
 
 	public List<Country> retrieveAllCountries() {
 
-		TypedQuery<Country> q = em.createQuery("select c from Country c",
-				Country.class);
-
+		List<Country> retVal = null;
 		try {
-			return q.getResultList();
+			retVal = em.createQuery("select c from Country c", Country.class)
+					.getResultList();
 		} catch (NoResultException e) {
-			return new ArrayList<Country>();
+			retVal = new ArrayList<Country>();
 		}
+
+		return retVal;
 	}
 
 	public List<Language> retrieveAllLanguages() {
 
-		TypedQuery<Language> q = em.createQuery("select l from Language l",
-				Language.class);
-
+		List<Language> retVal = null;
 		try {
-			return q.getResultList();
+			retVal = em.createQuery("select l from Language l", Language.class)
+					.getResultList();
 		} catch (NoResultException e) {
-			return new ArrayList<Language>();
+			retVal = new ArrayList<Language>();
 		}
+
+		return retVal;
 	}
 
 	public Country searchCountry(String countryName) {
 
-		TypedQuery<Country> q = em.createQuery(
-				"select c from Country c where c.name='" + countryName + "'",
-				Country.class);
-
+		Country retVal = null;
 		try {
-			return q.getSingleResult();
+			retVal = em
+					.createQuery(String.format(
+							"select c from Country c where c.name='%s'",
+							countryName), Country.class)
+					.getSingleResult();
 		} catch (NoResultException e) {
-			return new Country();
+			retVal = new Country();
 		}
+
+		return retVal;
 	}
 
 	public List<Country> searchCountries(String languageName) {
 
-		TypedQuery<Country> q = em.createQuery(
-				"select c from Country c, Language l where l.name='"
-						+ languageName + "' and l member of c.languages",
-				Country.class);
-
+		List<Country> retVal = null;
 		try {
-			return q.getResultList();
+			retVal = em
+					.createQuery(String.format(
+							"select c from Country c, Language l where l.name='%s' and l member of c.languages",
+							languageName), Country.class)
+					.getResultList();
 		} catch (NoResultException e) {
-			return new ArrayList<Country>();
+			retVal = new ArrayList<Country>();
 		}
+
+		return retVal;
 	}
 
-	public Integer searchPercentage(String countryName, String languageName) {
+	public int searchPercentage(String countryName, String languageName) {
 
-		TypedQuery<Integer> q = em.createQuery(
-				"select l.percentage from Country c, Language l where c.name='"
-						+ countryName + "' and l.name='" + languageName
-						+ "' and l member of c.languages", Integer.class);
-
+		int retVal = 0;
 		try {
-			return q.getSingleResult();
+			retVal = em
+					.createQuery(String.format(
+							"select l.percentage from Country c, Language l where c.name='%s' and l.name='%s' and l member of c.languages",
+							countryName, languageName), Integer.class)
+					.getSingleResult();
 		} catch (NoResultException e) {
-			return 0;
 		}
+
+		return retVal;
 	}
 }
