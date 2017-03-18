@@ -13,11 +13,9 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.sprint4us.demo.dao.CountryLanguageDAO;
 import com.sprint4us.demo.entity.Country;
 import com.sprint4us.demo.entity.Language;
 import com.sprint4us.demo.rest.CountryLanguageResourceConf;
@@ -25,9 +23,6 @@ import com.sprint4us.demo.rest.CountryLanguageResourceConf;
 @RunWith(SpringRunner.class)
 @ContextConfiguration(locations = { "/applicationContext.xml" })
 public class CoutryLanguageEndToEndTest extends JerseyTest {
-
-	@Autowired
-	private CountryLanguageDAO service;
 
 	@Override
 	protected Application configure() {

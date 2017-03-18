@@ -10,10 +10,12 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<compiler.version>3.6.1</compiler.version>
+		<surefire.version>2.19.1</surefire.version>
 		<jetty.version>9.4.2.v20170220</jetty.version>
 		<junit.version>4.12</junit.version>
 		<mockito.version>2.7.17</mockito.version>
-		<slf4j.version>1.7.24</slf4j.version>
+		<slf4j.version>1.7.25</slf4j.version>
+		<logback.version>1.2.2</logback.version>
 		<spring.version>4.3.7.RELEASE</spring.version>
 		<jersey.version>2.25.1</jersey.version>
 		<hk2.version>2.4.0</hk2.version>
@@ -76,13 +78,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.glassfish.jersey.test-framework</groupId>
-			<artifactId>jersey-test-framework-core</artifactId>
-			<version>${jersey.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
 			<artifactId>jersey-test-framework-provider-jetty</artifactId>
 			<version>${jersey.version}</version>
@@ -123,8 +118,20 @@
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
+			<artifactId>jcl-over-slf4j</artifactId>
 			<version>${slf4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
 		</dependency>
 
 		<dependency>
@@ -147,7 +154,6 @@
 		<plugins>
 
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${compiler.version}</version>
 				<configuration>
@@ -157,9 +163,31 @@
 			</plugin>
 
 			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${surefire.version}</version>
+				<configuration>
+					<systemProperties>
+						<property>
+							<name>java.util.logging.config.file</name>
+							<value>
+								${project.build.outputDirectory}/logging.properties</value>
+						</property>
+					</systemProperties>
+				</configuration>
+			</plugin>
+
+			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>${jetty.version}</version>
+				<configuration>
+					<systemProperties>
+						<systemProperty>
+							<name>java.util.logging.config.file</name>
+							<value>${project.build.outputDirectory}/logging.properties</value>
+						</systemProperty>
+					</systemProperties>
+				</configuration>
 				<dependencies>
 					<dependency>
 						<groupId>org.eclipse.jetty</groupId>

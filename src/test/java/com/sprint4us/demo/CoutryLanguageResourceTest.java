@@ -36,16 +36,16 @@ public class CoutryLanguageResourceTest extends JerseyTest {
 	private CountryLanguageDAO service;
 
 	@Override
-	protected Application configure() {
+	public Application configure() {
 
 		ResourceConfig config = new CountryLanguageResourceConf();
-		config.register(new InjectableProvider());
+		config.register(new MockProvider());
 
 		return config;
 	}
 
-	private class InjectableProvider extends AbstractBinder implements
-			Factory<CountryLanguageDAO> {
+	private class MockProvider extends AbstractBinder
+			implements Factory<CountryLanguageDAO> {
 
 		@Override
 		public void configure() {
@@ -62,7 +62,6 @@ public class CoutryLanguageResourceTest extends JerseyTest {
 		@Override
 		public void dispose(CountryLanguageDAO service) {
 
-			service = null;
 		}
 	}
 
@@ -71,8 +70,8 @@ public class CoutryLanguageResourceTest extends JerseyTest {
 
 		doNothing().when(service).create(any(Country.class));
 
-		Response resp = target("create/country").request().post(
-				Entity.entity("Netherlands", MediaType.TEXT_PLAIN));
+		Response resp = target("create/country").request()
+				.post(Entity.entity("Netherlands", MediaType.TEXT_PLAIN));
 		Country country = resp.readEntity(Country.class);
 		assertEquals(200, resp.getStatus());
 		assertEquals("Netherlands", country.getName());
@@ -99,8 +98,7 @@ public class CoutryLanguageResourceTest extends JerseyTest {
 				.queryParam("c", country.getName()).queryParam("l", "English")
 				.request().get().readEntity(String.class);
 		assertEquals(200, resp.getStatus());
-		assertEquals(
-				String.format("%s has %d%% %s as foreign language.\n",
-						country.getName(), 90, "English"), str);
+		assertEquals(String.format("%s has %d%% %s as foreign language.\n",
+				country.getName(), 90, "English"), str);
 	}
 }

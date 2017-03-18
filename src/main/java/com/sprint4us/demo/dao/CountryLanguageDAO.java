@@ -18,7 +18,7 @@ import com.sprint4us.demo.entity.Language;
 @Repository
 public class CountryLanguageDAO {
 
-	@PersistenceContext(unitName = "myPU", type = PersistenceContextType.EXTENDED)
+	@PersistenceContext(type = PersistenceContextType.EXTENDED)
 	private EntityManager em;
 
 	@Transactional
